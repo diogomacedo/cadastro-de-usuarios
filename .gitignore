@@ -1,0 +1,11 @@
+# Arquivos #
+*.jar
+*.war
+*.class
+*.log
+.classpath
+.project
+
+# Diretórios #
+target/
+data/
