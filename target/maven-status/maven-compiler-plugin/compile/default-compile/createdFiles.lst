@@ -1,0 +1,7 @@
+br/com/diogomacedo/repositories/UsuarioRepository.class
+br/com/diogomacedo/services/UsuarioService.class
+br/com/diogomacedo/entities/SenhaEntity.class
+br/com/diogomacedo/controllers/UsuarioController.class
+br/com/diogomacedo/services/impl/UsuarioServiceImpl.class
+br/com/diogomacedo/entities/UsuarioEntity.class
+br/com/diogomacedo/Aplicacao.class
