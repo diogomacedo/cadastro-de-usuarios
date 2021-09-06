@@ -1,9 +1,9 @@
 package br.com.diogomacedo.entities;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,8 +12,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import br.com.diogomacedo.dtos.UsuarioDTO;
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name = "tb_usuarios")
+@Getter
+@Setter
 public class UsuarioEntity {
 
 	@Id
@@ -28,64 +34,13 @@ public class UsuarioEntity {
 	private String nomeUsuario;
 
 	@Column(name = "data_cadastro")
-	private Date dataCadastro;
+	private Instant dataCadastro;
 
 	@Column(name = "data_atualizacao")
-	private Date dataAtualizacao;
+	private Instant dataAtualizacao;
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario")
 	private List<SenhaEntity> senhas;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getNomeCompleto() {
-		return nomeCompleto;
-	}
-
-	public void setNomeCompleto(String nomeCompleto) {
-		this.nomeCompleto = nomeCompleto;
-	}
-
-	public String getNomeUsuario() {
-		return nomeUsuario;
-	}
-
-	public void setNomeUsuario(String nomeUsuario) {
-		this.nomeUsuario = nomeUsuario;
-	}
-
-	public Date getDataCadastro() {
-		return dataCadastro;
-	}
-
-	public void setDataCadastro(Date dataCadastro) {
-		this.dataCadastro = dataCadastro;
-	}
-
-	public Date getDataAtualizacao() {
-		return dataAtualizacao;
-	}
-
-	public void setDataAtualizacao(Date dataAtualizacao) {
-		this.dataAtualizacao = dataAtualizacao;
-	}
-
-	public List<SenhaEntity> getSenhas() {
-		if (this.senhas == null) {
-			this.senhas = new ArrayList<SenhaEntity>();
-		}
-		return this.senhas;
-	}
-
-	public void setSenhas(List<SenhaEntity> senhas) {
-		this.senhas = senhas;
-	}
 
 	@Override
 	public String toString() {
@@ -94,4 +49,14 @@ public class UsuarioEntity {
 				+ "]";
 	}
 
+	public UsuarioDTO toDTO() {
+		UsuarioDTO usuario = new UsuarioDTO();
+		usuario.setId(this.id);
+		usuario.setNomeCompleto(this.nomeCompleto);
+		usuario.setNomeUsuario(this.nomeUsuario);
+		usuario.setDataCadastro(this.dataCadastro);
+		usuario.setDataAtualizacao(this.dataAtualizacao);
+		usuario.setSenha(this.getSenhas().get(0).getValor());
+		return usuario;
+	}
 }

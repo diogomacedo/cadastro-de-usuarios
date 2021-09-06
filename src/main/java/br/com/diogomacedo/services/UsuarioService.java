@@ -2,16 +2,14 @@ package br.com.diogomacedo.services;
 
 import org.springframework.data.domain.Page;
 
-import br.com.diogomacedo.entities.UsuarioEntity;
+import br.com.diogomacedo.dtos.UsuarioDTO;
 
 public interface UsuarioService {
 
-	Page<UsuarioEntity> listar(int page, int size);
+	Page<UsuarioDTO> listar(int page, int size);
 
-	UsuarioEntity salvar(UsuarioEntity usuario);
+	UsuarioDTO salvar(UsuarioDTO usuario);
 
-	UsuarioEntity buscar(String email);
-
-	UsuarioEntity buscar(String email, String senha);
+	UsuarioDTO buscar(Long idUsuario);
 
 }
