@@ -10,17 +10,23 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.springframework.data.domain.Persistable;
 
 import br.com.diogomacedo.dtos.UsuarioDTO;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
+//@Table(name = "tb_usuarios", uniqueConstraints = @UniqueConstraint(columnNames = "nome_usuario", name = "nome_usuario_uk"))
 @Table(name = "tb_usuarios")
 @Getter
 @Setter
-public class UsuarioEntity {
+public class UsuarioEntity implements Persistable<Long> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,7 +36,7 @@ public class UsuarioEntity {
 	@Column(name = "nome_completo")
 	private String nomeCompleto;
 
-	@Column(name = "nome_usuario")
+	@Column(name = "nome_usuario", unique = true)
 	private String nomeUsuario;
 
 	@Column(name = "data_cadastro")
@@ -41,6 +47,20 @@ public class UsuarioEntity {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario")
 	private List<SenhaEntity> senhas;
+
+	@Transient
+	private boolean entidadeNova = true;
+
+	@Override
+	public boolean isNew() {
+		return this.entidadeNova;
+	}
+
+	@PrePersist
+	@PostLoad
+	void markNotNew() {
+		this.entidadeNova = false;
+	}
 
 	@Override
 	public String toString() {
@@ -59,4 +79,5 @@ public class UsuarioEntity {
 		usuario.setSenha(this.getSenhas().get(0).getValor());
 		return usuario;
 	}
+
 }
